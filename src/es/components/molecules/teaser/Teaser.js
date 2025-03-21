@@ -3,6 +3,51 @@ import { Intersection } from '../../prototypes/Intersection.js'
 
 /* global self */
 
+const templates = {
+  plain: /* html */ `<template id="plain">
+      <style>
+        p {color: blue; }
+      </style>
+      <figure>
+        <figcaption>
+          <div>
+            <p class="bold">Nachhaltigkeit in der Gemeinschaftsgastronomie</p>
+            <h2 class="line-height-one-em">{{text}}</h2>
+            <a-arrow move="" hover-on-parent-shadow-root-host="" direction="right"></a-arrow>
+          </div>
+        </figcaption>
+      </figure>
+    </template>`,
+  overlay: /* html */ `<template id="overlay">
+      <figure>
+        <a-picture namespace="picture-teaser-" picture-load defaultSource="{{src}}" alt="randomized image"></a-picture>
+        <figcaption>
+          <h2 class=bg-color>{{title}}</h2>
+          <h2 class=bg-color><a-arrow move direction=right></a-arrow></h2>
+        </figcaption>
+      </figure>
+    </template>`,
+  tile: /* html */ `<template id="tile">
+      <figure>
+        <a-picture namespace="picture-teaser-" picture-load defaultSource="{{src}}" alt="randomized image"></a-picture>
+        <figcaption>
+          <h5>{{title}}</h5>
+          <p>{{text}}</p>
+          <a-link namespace="underline-"><a>{{link-text}}</a></a-link>
+        </figcaption>
+      </figure>
+    </template>`,
+  round: /* html */ `<template id="round">
+      <figure>
+        <a-picture namespace="picture-teaser-" picture-load defaultSource="{{src}}" alt="randomized image"></a-picture>
+        <figcaption>
+          <h5>{{title}}</h5>
+          <span class="style-tag">style tag test</span>
+        </figcaption>
+      </figure>
+    </template>`
+}
+
 /**
  * As a molecule, this component shall hold Atoms
  *
@@ -30,6 +75,9 @@ export default class Teaser extends Intersection() {
     this.mouseoutListener = event => {
       if (this.aArrow) this.aArrow.setAttribute('hover', '')
     }
+
+    // Access the template
+    this.template = this.createTemplateFromString(templates[this.moduleStyleName])
   }
 
   connectedCallback () {
@@ -37,6 +85,7 @@ export default class Teaser extends Intersection() {
     this.hidden = true
     const showPromises = []
     if (this.shouldRenderCSS()) showPromises.push(this.renderCSS())
+    if (this.shouldRenderHTML()) this.renderHTML()
     if (this.aPicture && this.aPicture.hasAttribute('picture-load') && !this.aPicture.hasAttribute('loaded')) showPromises.push(new Promise(resolve => this.addEventListener('picture-load', event => resolve(), { once: true })))
     Promise.all(showPromises).then(() => {
       if (!this.hasAttribute('no-figcaption-bg-color-equal')) {
@@ -204,6 +253,39 @@ export default class Teaser extends Intersection() {
     return this.fetchTemplate()
   }
 
+  shouldRenderHTML () {
+    return !this.root.querySelector('figure')
+  }
+
+  createTemplateFromString (htmlString) {
+    // parse the string into a document
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(htmlString, 'text/html')
+    // extract the <template> element from the parsed document
+    const templateFromString = doc.querySelector('template')
+    // import the template node into the current document
+    const importedTemplate = templateFromString ? document.importNode(templateFromString, true) : null
+    return importedTemplate
+  }
+
+  getFragmentHTML (fragment) {
+    const container = document.createElement('div')
+    container.appendChild(fragment.cloneNode(true))
+    return container.innerHTML
+  }
+
+  replacePlaceholdersWithAttributeValues (htmlString) {
+    return htmlString.replace(/{{([^}]+)}}/g, (match, attr) => {
+      return this.getAttribute(attr) || match
+    })
+  }
+
+  renderHTML () {
+    console.log(this.template)
+    const fragmentInnerHTML = this.getFragmentHTML(this.template?.content)
+    this.html = this.replacePlaceholdersWithAttributeValues(fragmentInnerHTML)
+  }
+
   /**
    * fetches the template
    *
@@ -302,7 +384,7 @@ export default class Teaser extends Intersection() {
       a.style.textDecoration = 'inherit'
       this.parentNode.replaceChild(a, this)
       a.appendChild(this)
-      this.checkIfLink = () => {}
+      this.checkIfLink = () => { }
     }
   }
 
@@ -312,5 +394,9 @@ export default class Teaser extends Intersection() {
 
   get aArrow () {
     return this.root.querySelector('a-arrow')
+  }
+
+  get moduleStyleName () {
+    return this.getAttribute('module-style') || 'plain'
   }
 }

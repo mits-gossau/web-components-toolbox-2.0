@@ -66,7 +66,7 @@ function extractProperty(inputText) {
 
 /**
  * Extract all CSS variables from a string.
- * The regex is from here: https://github.com/mits-gossau/web-components-toolbox/blob/master/src/es/components/prototypes/Shadow.js#L285
+ * The regex is from here: https://github.com/mits-gossau/web-components-toolbox-2.0/blob/master/src/es/components/prototypes/Shadow.js#L285
  * Returns an array of all variables found.
  * @param {string} str - The string to check for CSS variables
  * @return {Array<string>} - An array of all variables found

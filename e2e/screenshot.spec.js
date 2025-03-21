@@ -5,7 +5,7 @@ const PROJECT_NAME = dir.splice(3)[0]
 const WAITING_TIMEOUT = 2000
 
 test('demo page screenshot test', async ({ page, browserName }) => {
-  await page.goto('src/es/components/web-components-toolbox/docs/Template.html?rootFolder=src&css=./src/css/variablesCustom.css&logo=./src/es/components/atoms/logo/default-/default-.html&nav=./src/es/components/molecules/navigation/default-/default-.html&footer=./src/es/components/organisms/footer/default-/default-.html&content=./src/es/components/pages/Home.html')
+  await page.goto('src/es/components/web-components-toolbox-2.0/docs/Template.html?rootFolder=src&css=./src/css/variablesCustom.css&logo=./src/es/components/atoms/logo/default-/default-.html&nav=./src/es/components/molecules/navigation/default-/default-.html&footer=./src/es/components/organisms/footer/default-/default-.html&content=./src/es/components/pages/Home.html')
   const demoPage = await page.waitForSelector('body')
   const wcLoaded = await demoPage.getAttribute('wc-config-load')
   if (wcLoaded) {

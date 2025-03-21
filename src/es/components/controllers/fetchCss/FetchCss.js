@@ -152,7 +152,7 @@ export default class FetchCss extends Shadow(WebWorker()) {
    */
   async processStyle (fetchCSSParam, fetchStyle) {
     let style = await fetchStyle
-    // !IMPORTANT: Changes which are made below have to be cloned to src/es/components/web-components-toolbox/src/es/components/prototypes/Shadow.js
+    // !IMPORTANT: Changes which are made below have to be cloned to src/es/components/web-components-toolbox-2.0/src/es/components/prototypes/Shadow.js
     style = await this.webWorker(FetchCss.cssMaxWidth, style, fetchCSSParam.maxWidth)
     style = await this.webWorker(FetchCss.cssImportMetaUrl, style, fetchCSSParam.importMetaUrl)
     if (fetchCSSParam.cssSelector !== ':host') style = await this.webWorker(FetchCss.cssHostFallback, style, fetchCSSParam.cssSelector)
@@ -180,7 +180,7 @@ export default class FetchCss extends Shadow(WebWorker()) {
    * @return {import("../../prototypes/Shadow.js").fetchCSSParams}
    */
   static appendStyle (fetchCSSParam) {
-    // !IMPORTANT: Changes which are made below have to be cloned to src/es/components/web-components-toolbox/src/es/components/prototypes/Shadow.js
+    // !IMPORTANT: Changes which are made below have to be cloned to src/es/components/web-components-toolbox-2.0/src/es/components/prototypes/Shadow.js
     // create a new style node if none is supplied
     if (!fetchCSSParam.styleNode) {
       /** @type {HTMLStyleElement} */

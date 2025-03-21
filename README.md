@@ -1,7 +1,7 @@
 # web-components-toolbox
 The web component toolbox for any CMS but particularly used for [Web Components + Umbraco === Mutobo](http://mutobo.ch/)
 
-## [documentation](https://github.com/mits-gossau/web-components-toolbox/tree/master/docs/README.md)
+## [documentation](https://github.com/mits-gossau/web-components-toolbox-2.0/tree/master/docs/README.md)
 ## [organize components](https://wiki.migros.net/display/OCC/Web+Components+CMS+Template)
 
 Install:
@@ -11,7 +11,7 @@ VS Studio: `--remote` is required to load latest Frontend Solution into Backend 
 - `npm install`
 
 Previews:
-- https://mits-gossau.github.io/web-components-toolbox/
+- https://mits-gossau.github.io/web-components-toolbox-2.0/
 
 Component generation:   
 - To generate a new plain component use: `npm run make`
@@ -44,7 +44,7 @@ CSS Rules:
 - each template must have a local preview
 - ONE breakpoint strategy!
 - use _\_max-width_\_ for "@media only screen and (max-width:" selector
-- use _\_import-meta-url_\_ for all urls (!important, pass option "importMetaUrl: import.meta.url" to Shadow.js in the constructor to have the viewpoint of the Class inheriting Shadow.js) / Example [NewsPreview.js](https://github.com/mits-gossau/web-components-toolbox/blob/master/src/es/components/contentful/newsPreview/NewsPreview.js#L7)
+- use _\_import-meta-url_\_ for all urls (!important, pass option "importMetaUrl: import.meta.url" to Shadow.js in the constructor to have the viewpoint of the Class inheriting Shadow.js) / Example [NewsPreview.js](https://github.com/mits-gossau/web-components-toolbox-2.0/blob/master/src/es/components/contentful/newsPreview/NewsPreview.js#L7)
 - sort css properties and variables alphabetically
 - variables naming rule: --{selector aka component aka namespace}-{css property}-{pseudo class or media query name} eg. --p-background-color-hover
 - within the component don't use any name spacing eg. component header don't use --header-default-color just use --color the namespace can be added by the Shadow as an html attribute
@@ -69,7 +69,7 @@ Checklist for each component:
 
 TODO:
 - [ ] mdx icons pull dynamically from main repo https://git.intern.migros.net/mdx/mdx/-/tree/main/packages/icons/dist/svg
-- [x] mdx compatibility use scss from here: https://git.intern.migros.net/mdx/mdx/-/blob/main/packages/web-components/src/components/button/button.scss , etc. to transcend the styles here: https://github.com/mits-gossau/web-components-toolbox-mdx and extend the component in this toolbox if anything is missing.
+- [x] mdx compatibility use scss from here: https://git.intern.migros.net/mdx/mdx/-/blob/main/packages/web-components/src/components/button/button.scss , etc. to transcend the styles here: https://github.com/mits-gossau/web-components-toolbox-2.0-mdx and extend the component in this toolbox if anything is missing.
 - [ ] playwright single component tests
 - [ ] documenter.js / automatic story book documentation by comments
 - [ ] Template.html api call to fetch page content for previews (playwright or https://github.com/Rob--W/cors-anywhere)

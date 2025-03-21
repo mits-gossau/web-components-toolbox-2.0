@@ -222,7 +222,7 @@ export default class Checkout extends Shadow() {
       if (!productData || !productData.orderItems || productData.orderItems.length === 0) {
         this.html = /* html */ `
           <m-system-notification 
-              icon-src="/web-components-toolbox-migrospro/src/icons/shopping_basket.svg" 
+              icon-src="/web-components-toolbox-2.0-migrospro/src/icons/shopping_basket.svg" 
               icon-badge="0"
               title="Panier vide">
               <div slot="description">

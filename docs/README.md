@@ -17,7 +17,7 @@ The web-components-toolbox is a library designed for creating and managing web c
 ## Installation
 To set up the web-components-toolbox, follow these steps:
 - Clone the Repository:
-    - ```git clone https://github.com/mits-gossau/web-components-toolbox.git```
+    - ```git clone https://github.com/mits-gossau/web-components-toolbox-2.0.git```
 - Serve the index.html through a web server eg.: apache or install npm development dependencies, which include live-server:
     - ```npm install```
     - ```npm run serve```
@@ -25,10 +25,10 @@ To set up the web-components-toolbox, follow these steps:
 ### Other Npm Commands:
 - generate a new component: ```npm run make```
 - generate a preview from an url: ```npm run download-template-preview```
-Further commands can be found in the [package.json](https://github.com/mits-gossau/web-components-toolbox/blob/master/package.json)
+Further commands can be found in the [package.json](https://github.com/mits-gossau/web-components-toolbox-2.0/blob/master/package.json)
 
 ## Development Guidelines
-## [Rules](https://github.com/mits-gossau/web-components-toolbox/blob/master/README.md?plain=1#L18)
+## [Rules](https://github.com/mits-gossau/web-components-toolbox-2.0/blob/master/README.md?plain=1#L18)
 ### Component Rules
 Components should share their breakpoints with their children. If a component requires web components as children, it must define them using ```fetchModules```. Rendering should be triggered at the connectedCallback, ensuring checks are in place to avoid multiple renderings by functions as ```shouldRender``` and using ```this.hidden``` to make the components appear nicely. Add event listeners in the connectedCallback and remove them in the disconnectedCallback accordingly and synchronously.
 
@@ -53,7 +53,7 @@ The Shadow.js file in the web-components-toolbox serves as a foundational compon
 1. Shadow DOM Implementation
     Encapsulation: The Shadow.js file creates a shadow root for the custom element, which isolates its styles and markup from the global document. This encapsulation ensures that styles defined within the component do not interfere with external styles, providing a clean and predictable styling environment. By changing the attribute mode or as an property mode at the option argument when using new constructor, the shadow dom can be set 'open' or 'false'. 'false' ensures that the cSS falls back from the ```:host``` selector to id, if applicable, or else node name.
 2. Custom Element Definition
-    Defining Custom Elements: The file defines a custom element using the customElements.define() method. This allows you to create new HTML tags that can be used throughout your HTML documents, enhancing reusability and maintainability. Each custom element encapsulates its behavior and presentation logic, simplifying complex UI component management. The [wc-config.js](https://github.com/mits-gossau/web-components-toolbox/blob/master/wc-config.js#L196) is a web component loader, which optionally helps to load and define the in html found custom elements by it's definition dictionary and naming rules.
+    Defining Custom Elements: The file defines a custom element using the customElements.define() method. This allows you to create new HTML tags that can be used throughout your HTML documents, enhancing reusability and maintainability. Each custom element encapsulates its behavior and presentation logic, simplifying complex UI component management. The [wc-config.js](https://github.com/mits-gossau/web-components-toolbox-2.0/blob/master/wc-config.js#L196) is a web component loader, which optionally helps to load and define the in html found custom elements by it's definition dictionary and naming rules.
 
 ### Core Base of the Toolbox
 1. Lightweight Architecture
@@ -71,7 +71,7 @@ In the web-components-toolbox, name spacing for CSS is achieved through a struct
 The name spacing strategy typically involves prefixing CSS variables with a component-specific identifier. This practice ensures that styles are scoped correctly to their respective components, reducing the risk of unintended overrides or style leaks.
 
 ### Regex Functions in Name Spacing
-In the [provided code snippet](https://github.com/mits-gossau/web-components-toolbox/blob/master/src/es/components/prototypes/Shadow.js#L300) from Shadow.js, regex functions are employed to manipulate CSS variable names.
+In the [provided code snippet](https://github.com/mits-gossau/web-components-toolbox-2.0/blob/master/src/es/components/prototypes/Shadow.js#L300) from Shadow.js, regex functions are employed to manipulate CSS variable names.
 
 ### CSS Variable Generation:
 A regex pattern is used to format the CSS variable names based on the component's name. For instance, if the component is named myComponent, the regex transforms it into --my-component-{property} where {property} represents a specific style property related to that component.
