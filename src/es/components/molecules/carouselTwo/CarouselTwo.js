@@ -6,18 +6,23 @@ import { Mutation } from '../../prototypes/Mutation.js'
 /* global history */
 /* global CustomEvent */
 
+const templates = {
+  default: /* html */ `<template id="default">
+    <section>
+    </section>
+  </template>`
+}
+
 /**
  * https://css-tricks.com/how-to-make-a-css-only-carousel/
  * TODO: slides-per-view
  *
- * @attribute {
- * }
- * @css {
- * }
+ * @attribute {}
+ * @css {}
  * @type {CustomElementConstructor}
  */
 export default class CarouselTwo extends Mutation() {
-  constructor (options = {}, ...args) {
+  constructor(options = {}, ...args) {
     super({
       importMetaUrl: import.meta.url,
       mutationObserverInit: { subtree: true, childList: true },
@@ -81,10 +86,10 @@ export default class CarouselTwo extends Mutation() {
         let hostLeft, activeChild
         if (this.getAttribute('namespace') === 'carousel-two-teaser-' || this.getAttribute('namespace') === 'carousel-two-3-column-'
           ? (hostLeft = Math.round(this.section.getBoundingClientRect().right)) !== undefined && (activeChild = Array.from(this.section.children).find(node => {
-              const nodeLeft = Math.round(node.getBoundingClientRect().right)
-              const width = this.getAttribute('namespace') === 'carousel-two-3-column-' ? Math.round(node.getBoundingClientRect().width) : Math.round(node.getBoundingClientRect().width) / 2
-              return hostLeft + scrollTolerance > nodeLeft && hostLeft - (scrollTolerance + width) < nodeLeft
-            }))
+            const nodeLeft = Math.round(node.getBoundingClientRect().right)
+            const width = this.getAttribute('namespace') === 'carousel-two-3-column-' ? Math.round(node.getBoundingClientRect().width) : Math.round(node.getBoundingClientRect().width) / 2
+            return hostLeft + scrollTolerance > nodeLeft && hostLeft - (scrollTolerance + width) < nodeLeft
+          }))
           : (hostLeft = Math.round(this.section.getBoundingClientRect().left)) !== undefined && (activeChild =
             Array.from(this.section.children).find((node, index) => {
               const nodeLeft = Math.round(node.getBoundingClientRect().left)
@@ -127,7 +132,7 @@ export default class CarouselTwo extends Mutation() {
     this.interval = null
     // stop interval when clicking outside window eg. iframe, etc.
     this.isFocused = false
-    this.blurEventListener = event => {
+    this.blurEventListener = event => { 
       this.isFocused = false
       this.setInterval()
     }
@@ -140,9 +145,26 @@ export default class CarouselTwo extends Mutation() {
       let element = null
       if ((element = this.root.querySelector((event && event.detail && event.detail.selector.replace(/(.*#)(.*)$/, '#$2')) || location.hash))) this.scrollIntoView(element, false)
     }
+
+
+    // Access the template
+    this.template = this.createTemplateFromString(templates[this.moduleStyleName])
+    this.fillTemplate()
   }
 
-  connectedCallback () {
+  fillTemplate() { 
+    console.log(this.convertAttributeStringToJSON(this.carouselData))
+    const carouselData = this.convertAttributeStringToJSON(this.carouselData)
+    const fragmentInnerHTML = this.getFragmentHTML(this.template?.content)
+    const xhtml = this.replacePlaceholdersWithAttributeValues(fragmentInnerHTML)
+    const section = document.createElement('section')
+    section.innerHTML = carouselData.slides.map(slide => {
+      return `<a-picture picture-load defaultSource="${slide.src}" alt="${slide.alt}"></a-picture>`
+    })
+    this.html = section
+  }
+
+  connectedCallback() {
     super.connectedCallback()
     this.hidden = true
     const showPromises = []
@@ -172,7 +194,7 @@ export default class CarouselTwo extends Mutation() {
     if (this.hasAttribute('history') && !this.hasAttribute('interval')) self.addEventListener('hashchange', this.hashchangeEventListener)
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     super.disconnectedCallback()
     this.removeEventListener('click', this.clickListener)
     if (!this.hasAttribute('no-keydown')) document.removeEventListener('keydown', this.keydownListener)
@@ -186,7 +208,7 @@ export default class CarouselTwo extends Mutation() {
   }
 
   // incase a child would manipulate itself, expl. teaser or wrapper wrapping themself with an a tag when they get an href
-  mutationCallback (mutationList, observer) {
+  mutationCallback(mutationList, observer) {
     if (mutationList[0] && mutationList[0].type === 'childList') {
       this.setAttribute('count-section-children', this.section.children.length)
       mutationList[0].addedNodes.forEach(node => {
@@ -209,7 +231,7 @@ export default class CarouselTwo extends Mutation() {
    *
    * @return {boolean}
    */
-  shouldRenderCSS () {
+  shouldRenderCSS() {
     return !this.root.querySelector(`${this.cssSelector} > style[_css]`)
   }
 
@@ -218,7 +240,7 @@ export default class CarouselTwo extends Mutation() {
    *
    * @return {boolean}
    */
-  shouldRenderHTML () {
+  shouldRenderHTML() {
     return !this.section || !this.nav || !this.arrowNav
   }
 
@@ -227,7 +249,7 @@ export default class CarouselTwo extends Mutation() {
    *
    * @return {Promise<void>}
    */
-  renderCSS () {
+  renderCSS() {
     this.css = /* css */`
       :host {
         background-color: var(--background-color, transparent);
@@ -498,7 +520,7 @@ export default class CarouselTwo extends Mutation() {
    *
    * @return {Promise<void>}
    */
-  fetchTemplate () {
+  fetchTemplate() {
     // attribute controlled styles
     const setAttributeStyles = () => {
       if (this.hasAttribute('background-color')) {
@@ -633,13 +655,48 @@ export default class CarouselTwo extends Mutation() {
     }
   }
 
+
+  createTemplateFromString(htmlString) {
+    // parse the string into a document
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(htmlString, 'text/html')
+    // extract the <template> element from the parsed document
+    const templateFromString = doc.querySelector('template')
+    // import the template node into the current document
+    const importedTemplate = templateFromString ? document.importNode(templateFromString, true) : null
+    return importedTemplate
+  }
+
+  getFragmentHTML(fragment) {
+    const container = document.createElement('div')
+    container.appendChild(fragment.cloneNode(true))
+    return container.innerHTML
+  }
+
+  replacePlaceholdersWithAttributeValues(htmlString) {
+    return htmlString.replace(/{{([^}]+)}}/g, (match, attr) => {
+      return this.getAttribute(attr) || match
+    })
+  }
+
+  convertAttributeStringToJSON(str) {
+    // replace single quotes with double quotes
+    const withDoubleQuotes = str.replace(/'/g, '"');
+    // remove trailing commas before closing brackets or braces
+    const withoutTrailingCommas = withDoubleQuotes.replace(/,\s*([}$$])/g, '$1');
+    // parse the result into JSON
+    return JSON.parse(withoutTrailingCommas);
+  }
+
+
   /**
    * renders the html
    *
    * @return {Promise<void>}
    */
-  renderHTML () {
+  renderHTML() {
     this.section = this.root.querySelector(this.cssSelector + ' > section') || document.createElement('section')
+    debugger
     this.indicator = this.root.querySelector('#index')
     this.setSlideIndicator()
     this.nav = this.root.querySelector(this.cssSelector + ' > nav') || this.root.querySelector(this.cssSelector + ' section + div > nav') || document.createElement('nav')
@@ -735,7 +792,7 @@ export default class CarouselTwo extends Mutation() {
     })
   }
 
-  previous (focus) {
+  previous(focus) {
     if (this.getAttribute('namespace') === 'carousel-two-teaser-') return this.scrollIntoView((this.activeSlide && this.activeSlide.previousElementSibling.previousElementSibling) || Array.from(this.section.children)[this.section.children.length - 1], focus)
     if (this.getAttribute('namespace') === 'carousel-two-3-column-') {
       const jumpToLastElement = Array.from(this.section.children)[this.section.children.length - 1]
@@ -757,12 +814,12 @@ export default class CarouselTwo extends Mutation() {
     return this.scrollIntoView((this.activeSlide && this.activeSlide.previousElementSibling) || Array.from(this.section.children)[this.section.children.length - 1], focus)
   }
 
-  next (focus) {
+  next(focus) {
     return this.scrollIntoView((this.activeSlide && this.activeSlide.nextElementSibling) || Array.from(this.section.children)[0], focus)
   }
 
   // NOTE: keep focus default on false, since this focus action can have bad side effects. Now, no other function calls this with focus=true. The original idea was, that a focus=false would set focus on the picture and for that support tab navigation.
-  scrollIntoView (node, focus = false, force = false) {
+  scrollIntoView(node, focus = false, force = false) {
     if (typeof node === 'string') node = this.section.querySelector(node) || this.section.children[0]
     if (!node) return console.warn('CarouselTwo.js can not scrollIntoView this node: ', { node, sectionChildren: this.section.children, carousel: this })
     if (force || !node.classList.contains('active')) {
@@ -789,7 +846,7 @@ export default class CarouselTwo extends Mutation() {
     return node
   }
 
-  setInterval () {
+  setInterval() {
     if (this.hasAttribute('interval') && !this.isFocused) {
       // @ts-ignore
       clearInterval(this.interval)
@@ -797,12 +854,12 @@ export default class CarouselTwo extends Mutation() {
     }
   }
 
-  clearInterval () {
+  clearInterval() {
     // @ts-ignore
     if (this.hasAttribute('interval')) clearInterval(this.interval)
   }
 
-  getRandomString () {
+  getRandomString() {
     if (self.crypto && self.crypto.getRandomValues && navigator.userAgent.indexOf('Safari') === -1) {
       const a = self.crypto.getRandomValues(new Uint32Array(3))
       let token = ''
@@ -815,17 +872,17 @@ export default class CarouselTwo extends Mutation() {
     }
   }
 
-  setSlideIndicator () {
+  setSlideIndicator() {
     if (this.indicator) {
       this.indicator.innerHTML = `${this.currentIndex} / ${this.section.children.length}`
     }
   }
 
-  get activeSlide () {
+  get activeSlide() {
     return this.section.querySelector('.active')
   }
 
-  get id () {
+  get id() {
     return this._id
       ? this._id
       : this.getAttribute('id')
@@ -833,7 +890,15 @@ export default class CarouselTwo extends Mutation() {
         : (this._id = `${this.idPefix}${this.getRandomString()}`)
   }
 
-  get idPefix () {
+  get idPefix() {
     return 'img-'
+  }
+
+  get moduleStyleName() {
+    return this.getAttribute('module-style') || 'plain'
+  }
+
+  get carouselData() {
+    return this.getAttribute('carousel-data') || '{}'
   }
 }
