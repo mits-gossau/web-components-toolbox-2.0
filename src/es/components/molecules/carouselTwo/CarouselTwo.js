@@ -6,13 +6,6 @@ import { Mutation } from '../../prototypes/Mutation.js'
 /* global history */
 /* global CustomEvent */
 
-const templates = {
-  default: /* html */ `<template id="default">
-    <section>
-    </section>
-  </template>`
-}
-
 /**
  * https://css-tricks.com/how-to-make-a-css-only-carousel/
  * TODO: slides-per-view
@@ -147,21 +140,17 @@ export default class CarouselTwo extends Mutation() {
     }
 
 
-    // Access the template
-    this.template = this.createTemplateFromString(templates[this.moduleStyleName])
+    // fill template from attribute 
     this.fillTemplate()
   }
 
-  fillTemplate() { 
-    console.log(this.convertAttributeStringToJSON(this.carouselData))
-    const carouselData = this.convertAttributeStringToJSON(this.carouselData)
-    const fragmentInnerHTML = this.getFragmentHTML(this.template?.content)
-    const xhtml = this.replacePlaceholdersWithAttributeValues(fragmentInnerHTML)
-    const section = document.createElement('section')
-    section.innerHTML = carouselData.slides.map(slide => {
-      return `<a-picture picture-load defaultSource="${slide.src}" alt="${slide.alt}"></a-picture>`
-    })
-    this.html = section
+  fillTemplate() {
+    const carouselData = this.convertAttributeStringToJSON(this.carouselData);
+    const section = document.createElement('section');
+    section.innerHTML = carouselData.slides.reduce((html, slide) => {
+      return `${html}<a-picture picture-load defaultSource="${slide.src}" alt="${slide.alt}"></a-picture>`;
+    }, '');
+    this.html = section;
   }
 
   connectedCallback() {
@@ -696,7 +685,6 @@ export default class CarouselTwo extends Mutation() {
    */
   renderHTML() {
     this.section = this.root.querySelector(this.cssSelector + ' > section') || document.createElement('section')
-    debugger
     this.indicator = this.root.querySelector('#index')
     this.setSlideIndicator()
     this.nav = this.root.querySelector(this.cssSelector + ' > nav') || this.root.querySelector(this.cssSelector + ' section + div > nav') || document.createElement('nav')
