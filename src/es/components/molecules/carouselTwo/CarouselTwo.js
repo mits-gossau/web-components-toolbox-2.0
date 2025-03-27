@@ -139,13 +139,13 @@ export default class CarouselTwo extends Mutation() {
       if ((element = this.root.querySelector((event && event.detail && event.detail.selector.replace(/(.*#)(.*)$/, '#$2')) || location.hash))) this.scrollIntoView(element, false)
     }
 
-
     // fill template from attribute 
-    this.fillTemplate()
+    this.fillTemplate(this.carouselData)
   }
 
-  fillTemplate() {
-    const carouselData = this.convertAttributeStringToJSON(this.carouselData);
+  fillTemplate(htmlContent) {
+    if(!htmlContent) return
+    const carouselData = this.convertAttributeStringToJSON(htmlContent);
     const section = document.createElement('section');
     section.innerHTML = carouselData.slides.reduce((html, slide) => {
       return `${html}<a-picture picture-load defaultSource="${slide.src}" alt="${slide.alt}"></a-picture>`;
@@ -887,6 +887,6 @@ export default class CarouselTwo extends Mutation() {
   }
 
   get carouselData() {
-    return this.getAttribute('carousel-data') || '{}'
+    return this.getAttribute('carousel-data') || null
   }
 }
