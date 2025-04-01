@@ -145,12 +145,35 @@ export default class CarouselTwo extends Mutation() {
 
   fillTemplate(htmlContent) {
     if(!htmlContent) return
-    const carouselData = this.convertAttributeStringToJSON(htmlContent);
-    const section = document.createElement('section');
+    const carouselData = this.convertAttributeStringToJSON(htmlContent)
+    const section = document.createElement('section')
     section.innerHTML = carouselData.slides.reduce((html, slide) => {
-      return `${html}<a-picture picture-load defaultSource="${slide.src}" alt="${slide.alt}"></a-picture>`;
-    }, '');
-    this.html = section;
+      const html_before = slide.html_before ? `<div>${slide.html_before}` : ''
+      const title = slide.title ? `<h1>${slide.title}</h1>` : ''
+      const text = slide.text ? `<p>${slide.text}</p>` : ''
+      const html_after = slide.html_after ? `${slide.html_after}</div>` : ''
+      return `
+        ${html}
+        ${html_before}
+        <a-picture picture-load defaultSource="${slide.src}" alt="${slide.alt}"></a-picture>
+        ${title}
+        ${text}
+        ${html_after}
+        `
+    }, '')
+
+    if (carouselData.slides[0]?.nav) {
+      const nav = document.createElement('nav')
+      nav.innerHTML = carouselData.slides.reduce((html, slide) => {
+        return `
+          ${html}
+          <a><a-picture picture-load defaultSource="${slide.nav.src}" alt="${slide.nav.alt}"></a-picture></a>
+        `
+      }, '')
+      debugger
+      section.appendChild(nav)
+    }
+    this.html = section
   }
 
   connectedCallback() {
@@ -672,9 +695,12 @@ export default class CarouselTwo extends Mutation() {
     // replace single quotes with double quotes
     const withDoubleQuotes = str.replace(/'/g, '"');
     // remove trailing commas before closing brackets or braces
-    const withoutTrailingCommas = withDoubleQuotes.replace(/,\s*([}$$])/g, '$1');
+    const withoutTrailingCommas = withDoubleQuotes.replace(/,\s*([}\]])/g, '$1');
+    // Remove control characters (ASCII 0-31) and DEL character (ASCII 127)
+    const cleanString = withoutTrailingCommas.replace(/[\x00-\x1F\x7F]/g, '');
     // parse the result into JSON
-    return JSON.parse(withoutTrailingCommas);
+    console.log('String to parse:', cleanString); // We now log the clean string
+    return JSON.parse(cleanString);
   }
 
 
