@@ -1,66 +1,72 @@
-<m-emotion-carousel namespace="emotion-carousel-default-">
+<m-emotion-carousel namespace="emotion-carousel-default-" interval="10000" height="80vh" >
     <div class="component-container">
         <div class="slide">
-            <a-emotion-pictures class="slide-img" namespace="emotion-pictures-default-">
-                <a href='https://www.delica.com/-/media/delicacom/Bilder/Slider/CoffeeBall-in-Machine.ashx'>
-                    <a-picture namespace="picture-cover-" picture-load defaultSource="./img/CoffeeB.jpg" alt="randomized image"></a-picture>
+            <a-emotion-pictures namespace="emotion-pictures-general-">
+                <a href='/baahhh'>
+                    <a-picture picture-load defaultSource="./img/demo_1.jpeg" alt="demo_1"></a-picture>
                 </a>
             </a-emotion-pictures>
-            <div class="slide-description">
-                <h1 class="title">DAS KAPSEL-SYSTEM OHNE KAPSEL</h1>
-                <p><a href="" class="link-description">COFFEEB</a></p>
-            </div>
+        </div> 
+        <div class="slide">
+            <a-emotion-pictures namespace="emotion-pictures-general-">
+                <a href="/baaahhh">
+                    <a-picture picture-load defaultSource="./img/demo_1.jpeg" alt="randomized image"></a-picture>
+                    <div class="logo" logo-position="center" logo-position-y="center">
+                        <a-picture picture-load defaultSource="./img/logo.png" alt="randomized image"
+                            namespace="emotion-pictures-general-logo-"></a-picture>
+                    </div>
+                </a>
+            </a-emotion-pictures>
         </div>
         <div class="slide">
-            <a-emotion-pictures class="slide-img" namespace="emotion-pictures-default-">
-                <a href='https://www.delica.com/-/media/delicacom/Bilder/Slider/CoffeeBall-in-Machine.ashx'>
-                    <a-picture namespace="picture-cover-" picture-load defaultSource="./img/Glace_Slider_1a.jpg" alt="randomized image"></a-picture>
+            <a-emotion-pictures namespace="emotion-pictures-general-">
+                <a href="/baaahhh">
+                    <div>
+                        <h2 class="bg-color font-size-big font-family-secondary">
+                            With Logo and Title
+                        </h2>
+                        <h2 class="bg-color font-family-secondary subline">Gewinne ein Goodie-Package von YOGA NINA und
+                            HITZBERGER.</h2>
+                    </div>
+                    <a-picture picture-load defaultSource="./img/demo_1.jpeg" alt="randomized image"></a-picture>
+                    <div class="logo" logo-position="center" logo-position-y="center">
+                        <a-picture picture-load defaultSource="./img/logo.png" alt="randomized image"
+                            namespace="emotion-pictures-general-logo-"></a-picture>
+                    </div>
                 </a>
             </a-emotion-pictures>
-            <div class="slide-description">
-                <h1 class="title">ERFRISCHENDE GENUSSMOMENTE</h1>
-                <p><a href="" class="link-description">ZU DEN MARKEN</a></p>
-            </div>
+        </div>
+         <div class="slide">
+            <a-emotion-pictures namespace="emotion-pictures-general-">
+                <a href="/baaahhh">
+                    <div>
+                        <h2 class="bg-color font-size-big font-family-secondary">With Title</h2>
+                    </div>
+                    <a-picture picture-load defaultSource="./img/demo_1.jpeg" alt="randomized image"></a-picture>
+                </a>
+            </a-emotion-pictures>
         </div>
         <div class="slide">
-            <a-emotion-pictures class="slide-img" namespace="emotion-pictures-default-">
-                <a href='https://www.delica.com/-/media/delicacom/Bilder/Slider/CoffeeBall-in-Machine.ashx'>
-                    <a-picture namespace="picture-cover-" picture-load defaultSource="./img/Kaffee_splash.jpg" alt="randomized image"></a-picture>
+            <a-emotion-pictures namespace="emotion-pictures-general-">
+                <a href="/baaahhh">
+                    <div>
+                        <h2 class="bg-color font-size-big font-family-secondary">With Button</h2>
+                        <div class="spacer-one"></div>
+                        <a-button hover-on-parent-shadow-root-host namespace="button-primary-" href="/delivery/"
+                            target="_self" tabindex="0" role="link" data-href="/delivery/">
+                            Order now
+                        </a-button>
+                    </div>
+                    <a-picture picture-load defaultSource="./img/demo_1.jpeg" alt="randomized image"></a-picture>
                 </a>
-            </a-emotion-pictures>
-            <div class="slide-description">
-                <h1 class="title">REINVENTING GOODNESS</h1>
-                <p><a href="" class="link-description">DAFÜR STEHT DELICA</a></p>
-            </div>
-        </div>
-        <div class="slide">
-            <a-emotion-pictures class="slide-img" namespace="emotion-pictures-default-">
-                <a href='https://www.delica.com/-/media/delicacom/Bilder/Slider/CoffeeBall-in-Machine.ashx'>
-                    <a-picture namespace="picture-cover-" picture-load defaultSource="./img/WEB_Header_bester_Arbeitgeber.jpg" alt="randomized image"></a-picture>
-                </a>
-            </a-emotion-pictures>
-            <div class="slide-description">
-                <h1 class="title">BESTE ARBEITGEBER 2023</h1>
-                <p><a href="" class="link-description">ARBEITEN BEI DELICA</a></p>
-            </div>
-        </div>
-        <div class="slide">
-            <a-emotion-pictures class="slide-img" namespace="emotion-pictures-default-">
-                <a href='https://www.delica.com/-/media/delicacom/Bilder/Slider/CoffeeBall-in-Machine.ashx'>
-                    <a-picture namespace="picture-cover-" picture-load defaultSource="./img/Kaffee_4.jpg" alt="randomized image"></a-picture>
-                </a>
-            </a-emotion-pictures>
-            <div class="slide-description">
-                <h1 class="title">USER KAFFEE-GENUSS</h1>
-                <p><a href="" class="link-description">ZUM SORTIMENT</a></p>
-            </div>
-        </div>
+            </a-emotion-pictures> 
+        </div> 
         <div class="controls">
             <div class="section left">
-                <h1><a-arrow class="btn btn-prev" direction="left"></a-arrow></h1>
+                <h1><a-arrow class="arrow-btn btn-prev" direction="left"></a-arrow></h1>
             </div>
             <div class="section right">
-                <h1><a-arrow class="btn btn-next" direction="right"></a-arrow></h1>
+                <h1><a-arrow class="arrow-btn btn-next" direction="right"></a-arrow></h1>
             </div>
         </div>
     </div>
