@@ -2,7 +2,7 @@ name: Cleanup Files and Directories
 
 on:
   push:
-    branches: [ main ]  # Replace with your default branch name
+    branches: [ master ]  
 
 jobs:
   cleanup:
