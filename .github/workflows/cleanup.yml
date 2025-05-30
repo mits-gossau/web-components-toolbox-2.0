@@ -17,7 +17,7 @@ jobs:
         run: |
           # Replace the lines below with your files/directories
           rm -f unwanted-file1.txt temporary-file.log
-          rm -rf temp-directory cache-folder
+          rm -rf e2e generator
 
       - name: Commit and push changes
         run: |
