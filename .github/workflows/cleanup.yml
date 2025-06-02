@@ -18,6 +18,7 @@ jobs:
           # Replace the lines below with your files/directories
           ls -la
           rm -rf ./e2e/ ./generator/
+          ls -la
 
       - name: Commit and push changes
         run: |
