@@ -16,6 +16,7 @@ jobs:
       - name: Delete files and directories
         run: |
           # Replace the lines below with your files/directories
+          ls -la
           rm -f unwanted-file1.txt temporary-file.log
           rm -rf e2e/ generator/
 
