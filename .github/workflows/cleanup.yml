@@ -19,6 +19,7 @@ jobs:
           ls -la
           [ -d ./e2e/ ] && rm -rf ./e2e/
           [ -d ./generator/ ] && rm -rf ./generator/
+          [ -f ./package-lock.json ] && rm -f ./package-lock.json
           [ -d ./src/es/components/atoms/emotionPictures/corporate-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/corporate-/
           [ -d ./src/es/components/atoms/emotionPictures/default-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/default-/
           [ -d ./src/es/components/atoms/emotionPictures/with-button-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/with-button-/
