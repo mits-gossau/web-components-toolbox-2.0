@@ -17,8 +17,16 @@ jobs:
         run: |
           # Replace the lines below with your files/directories
           ls -la
-          rm -rf ./e2e/ ./generator/ ./src/es/components/atoms/emotionPictures/corporate-/ ./src/es/components/atoms/emotionPictures/default-/ ./src/es/components/atoms/emotionPictures/with-button-/ ./src/es/components/atoms/emotionPictures/with-logo-/ ./src/es/components/atoms/emotionPictures/with-title-/ ./src/es/components/atoms/emotionPictures/with-video-/ 
-          # rm -f ./src/es/components/atoms/emotionPictures/EmotionPictures.json/ ./src/es/components/atoms/emotionPictures/readme.md/
+          [ -d ./e2e/ ] && rm -rf ./e2e/
+          [ -d ./generator/ ] && rm -rf ./generator/
+          [ -d ./src/es/components/atoms/emotionPictures/corporate-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/corporate-/
+          [ -d ./src/es/components/atoms/emotionPictures/default-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/default-/
+          [ -d ./src/es/components/atoms/emotionPictures/with-button-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/with-button-/
+          [ -d ./src/es/components/atoms/emotionPictures/with-logo-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/with-logo-/
+          [ -d ./src/es/components/atoms/emotionPictures/with-title-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/with-title-/
+          [ -d ./src/es/components/atoms/emotionPictures/with-video-/ ] && rm -rf ./src/es/components/atoms/emotionPictures/with-video-/
+          # [ -f ./src/es/components/atoms/emotionPictures/EmotionPictures.json ] && rm -f ./src/es/components/atoms/emotionPictures/EmotionPictures.json
+          # [ -f ./src/es/components/atoms/emotionPictures/readme.md ] && rm -f ./src/es/components/atoms/emotionPictures/readme.md
           ls -la
 
       - name: Commit and push changes
