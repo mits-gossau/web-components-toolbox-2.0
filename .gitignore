@@ -12,7 +12,9 @@
 .settings/
 .vs/
 
-
 #System Files
 .DS_Store
 Thumbs.db
+
+# Keep redmine files
+README.md
