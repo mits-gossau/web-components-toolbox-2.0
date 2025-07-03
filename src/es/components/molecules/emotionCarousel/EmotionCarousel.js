@@ -4,60 +4,59 @@ export default class EmotionCarousel extends Shadow() {
   constructor(options = {}, ...args) {
     super({ importMetaUrl: import.meta.url, ...options }, ...args)
     this.emotionPictures
-  }
+    this.timer
+    this.breakPoint = parseInt(self.Environment.mobileBreakpoint().replace('px', ''), 10)
+    this.nextButtonListener = () => {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.changeSlide, 10000)
+      this.curSlide = (this.curSlide + 1) % this.slides.length
+      this.updateSlideTransform(this.curSlide)
+    }
 
-  connectedCallback() {
-    if (this.shouldRenderCSS()) this.renderCSS()
+    this.prevButtonListener = () => {
+      this.curSlide = (this.curSlide - 1 + this.slides.length) % this.slides.length
+      this.updateSlideTransform(this.curSlide)
+    }
 
+    this.resizeListener = () => {
+      this.updateHeight()
+    }
 
-    this.addEventListener('picture-load', () => {
-      if (!this.height) {
+    this.pictureLoadListener = () => {
+      if ((!this.height && window.innerWidth > this.breakPoint) || (!this.heightMobile && window.innerWidth <= this.breakPoint)) {
         this.updateHeight()
-        window.addEventListener('resize', () => {
-          this.updateHeight()
-        })
-      }
-      else {
-        const breakPoint = parseInt(self.Environment.mobileBreakpoint().replace('px', ''), 10);
-        if (window.innerWidth <= breakPoint) { 
+        window.addEventListener('resize', this.resizeListener)
+      } else {
+        if (window.innerWidth <= this.breakPoint) {
           this.updateShownHeight(this.heightMobile);
         } else {
           this.updateShownHeight(this.height);
         }
       }
-
-    })
-
-
-    let curSlide = 0
-    this.updateSlideTransform(curSlide)
-
-    this.nextButton?.addEventListener('click', () => {
-      clearInterval(timer)
-      timer = setInterval(changeSlide, 10000)
-      curSlide = (curSlide + 1) % this.slides.length
-      this.updateSlideTransform(curSlide)
-    })
-
-    this.prevButton?.addEventListener('click', () => {
-      curSlide = (curSlide - 1 + this.slides.length) % this.slides.length
-      this.updateSlideTransform(curSlide)
-    })
-
-    const changeSlide = () => {
-      curSlide = (curSlide + 1) % this.slides.length
-      this.updateSlideTransform(curSlide)
     }
 
-    let timer = setInterval(changeSlide, this.interval)
+    this.changeSlide = () => {
+      this.curSlide = (this.curSlide + 1) % this.slides.length
+      this.updateSlideTransform(this.curSlide)
+    }
+  }
+
+  connectedCallback() {
+    if (this.shouldRenderCSS()) this.renderCSS()
+    this.addEventListener('picture-load', this.pictureLoadListener)
+    this.curSlide = 0
+    this.updateSlideTransform(this.curSlide)
+    this.nextButton?.addEventListener('click', this.nextButtonListener)
+    this.prevButton?.addEventListener('click', this.prevButtonListener)
+    this.timer = setInterval(this.changeSlide, this.interval)
   }
 
   disconnectedCallback() {
-    this.nextButton?.removeEventListener('click', () => { })
-    this.prevButton?.removeEventListener('click', () => { })
-    this.removeEventListener('picture-load', () => { })
-    this.removeEventListener('resize', () => { })
-    clearInterval(timer)
+    this.nextButton?.removeEventListener('click', this.nextButtonListener)
+    this.prevButton?.removeEventListener('click', this.prevButtonListener)
+    this.removeEventListener('picture-load', this.pictureLoadListener)
+    window.removeEventListener('resize', this.resizeListener)
+    clearInterval(this.timer)
   }
 
   shouldRenderCSS() {
@@ -251,3 +250,4 @@ export default class EmotionCarousel extends Shadow() {
     return this.getAttribute('height-Mobile')
   }
 }
+
