@@ -4,6 +4,7 @@ import { Intersection } from '../../prototypes/Intersection.js'
 /**
  * Lazy load Iframe
  * Example at: /src/es/components/atoms/iframe/Iframe.html
+ * TODO: Make this work with dynamic height for forms: https://stackoverflow.com/questions/49253341/how-to-make-iframe-100-height-according-to-its-content
  *
  * @export
  * @class Iframe
@@ -101,6 +102,22 @@ export default class Iframe extends Intersection() {
             : ''
         }
         max-height: var(--max-height, ${this.hasAttribute('keep-aspect-ratio') ? 'max-content' : '75vh'});
+      }
+      ${
+        this.iframe &&
+        this.iframe.getAttribute('width-mobile') &&
+        !this.iframe.getAttribute('width-mobile').includes('%') &&
+        this.iframe.getAttribute('height-mobile') &&
+        !this.iframe.getAttribute('height-mobile').includes('%')
+          ? /* css */`
+            @media only screen and (max-width: _max-width_) {
+              :host, :host > iframe {
+                aspect-ratio: ${this.iframe.getAttribute('width-mobile')} / ${this.iframe.getAttribute('height-mobile')};
+              }
+            }
+          `
+          // @ts-ignore
+          : ''
       }
     `
   }

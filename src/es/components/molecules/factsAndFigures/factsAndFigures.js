@@ -1,28 +1,26 @@
 import { Shadow } from '../../prototypes/Shadow.js'
 
 export default class SustainabilityMetrics extends Shadow() {
-  constructor(options = {}, ...args) {
-    super({importMetaUrl: import.meta.url, ...options }, ...args)
-
+  constructor (options = {}, ...args) {
+    super({ importMetaUrl: import.meta.url, ...options }, ...args)
   }
 
-  connectedCallback() {
+  connectedCallback () {
     if (this.shouldRenderCSS()) this.renderCSS()
     if (this.getAttribute('defaultSource')) {
-      console.log(this.numbersContainer.length)
       const currentDefaultSource = this.getAttribute('defaultSource')
       this.backgroundPicture.setAttribute('defaultSource', currentDefaultSource)
       this.backgroundPicture.style = `background-image: url(${currentDefaultSource}); background-size: cover; background-position: center;`
       this.backgroundOverlay.style.display = 'block'
-      this.style = 'color: white;'
+      this.style = '--facts-and-figures-default-text-color-custom: white !important;'
     }
   }
 
-  shouldRenderCSS() {
+  shouldRenderCSS () {
     return !this.root.querySelector(`:host > style[_css], ${this.tagName} > style[_css]`)
   }
 
-  renderCSS() {
+  renderCSS () {
     this.css = /* css */`
     :host {
         overflow: var(--overflow, hidden);
@@ -43,6 +41,12 @@ export default class SustainabilityMetrics extends Shadow() {
         width: var(--background-width, 100%);
         position: var(--background-position, absolute);
         z-index: var(--background-z-index, 1);
+    }
+
+    :host .number-percentage{
+      font-size: var(--number-percentage-font-size, 1.75em);
+      margin: var(--number-percentage-margin, 0);
+      font-family: var(--number-percentage-font-family, var(--font-family, 'Arial', sans-serif));
     }
 
     .background-overlay {
@@ -108,7 +112,6 @@ export default class SustainabilityMetrics extends Shadow() {
     ]
     switch (this.getAttribute('namespace')) {
       case 'facts-and-figures-default-':
-        console
         return this.fetchCSS([{
           path: `${this.importMetaUrl}./default-/default-.css`, // apply namespace since it is specific and no fallback
           namespace: false
@@ -118,15 +121,15 @@ export default class SustainabilityMetrics extends Shadow() {
     }
   }
 
-  get backgroundPicture() {
+  get backgroundPicture () {
     return this.root.querySelector('.background')
   }
 
-  get backgroundOverlay() {
+  get backgroundOverlay () {
     return this.root.querySelector('.background-overlay')
   }
 
-  get numbersContainer() {
+  get numbersContainer () {
     return this.root.querySelectorAll('.numbers > *')
   }
 }

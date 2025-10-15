@@ -47,12 +47,18 @@ export default class MenuIcon extends Shadow() {
         })))
       }
     }
+
+    // accessibility
+    this.enterEventListener = event => {
+      if (event.code === 'Enter' && event.composedPath()[0].matches(':focus')) this.click()
+    }
   }
 
   connectedCallback () {
     if (this.shouldRenderCSS()) this.renderCSS()
     if (this.shouldRenderHTML()) this.renderHTML()
     if (!this.hasAttribute('no-click') || this.getAttribute('click-event-name')) this.addEventListener('click', this.clickListener)
+    this.addEventListener('keyup', this.enterEventListener)
 
     this.isCheckout = this.parentElement?.getAttribute('is-checkout') === 'true'
     if (this.isCheckout) this.style.display = 'none'
@@ -60,6 +66,7 @@ export default class MenuIcon extends Shadow() {
 
   disconnectedCallback () {
     if (!this.hasAttribute('no-click')) this.removeEventListener('click', this.clickListener)
+    this.removeEventListener('keyup', this.enterEventListener)
   }
 
   /**
@@ -95,10 +102,6 @@ export default class MenuIcon extends Shadow() {
         margin: var(--margin, 0);
         transition: var(--transition, 0.2s);
         font-size: 14px;
-        outline: var(--outline, none) !important;
-      }
-      :host(:focus-visible) {
-        outline: var(--outline-focus-visible, var(--outline, none)) !important;
       }
       :host(.${this.openClass}) {
         padding: var(--padding-open, 0 calc(var(--width, 35px) / 4)) !important;
@@ -129,6 +132,25 @@ export default class MenuIcon extends Shadow() {
       /* Rotate last ${this.barClass} */
       :host(.${this.openClass}) .${this.barClass}3 {
         transform: var(--two-transform, rotate(45deg) translateY(calc(var(--height, 5px) * -5.5 / 2)));
+      }
+      :host([background])::before {
+        --size-before: 3em;
+        content: "";
+        position: absolute;
+        display: block;
+        height: var(--height-before, var(--size-before));
+        width: var(--width-before, var(--size-before));
+        background: var(--background-before, var(--color-secondary, red));
+        border-radius: var(--border-radius-before, 50%);
+        outline: var(--outline-before, none);
+        right: var(--right-before, unset);
+        left: var(--left-before, calc(0.135 * var(--size-before)));
+        top: var(--top-before, calc(-0.325 * var(--size-before)));
+        bottom: var(--bottom-before, unset);
+        transition: var(--transition-before, background-color 0.3s ease-out)
+      }
+      :host([background]:hover)::before {
+        background: var(--background-before-hover, var(--background-before, var(--color-secondary, red)));
       }
     `
   }

@@ -18,9 +18,8 @@ export default class Button extends Hover() {
 
   constructor (options = {}, ...args) {
     // @ts-ignore
-    super({ hoverInit: undefined, importMetaUrl: import.meta.url, ...options }, ...args)
+    super({ hoverInit: undefined, importMetaUrl: import.meta.url, tabindex: 'no-tabindex', ...options }, ...args)
 
-    this.removeAttribute('tabindex')
     // get the original innerHTML of the component, so that when it rerenders as an a-tag it doesn't loose its content
     let button
     // in case there is already a button, grab the buttons innerHTML, since renderHTML is going to create a new button resp. a-tag instead of the button
@@ -220,6 +219,7 @@ export default class Button extends Hover() {
         outline: var(--outline, none);
         overflow: hidden;
         padding: var(--padding, calc(0.75em - var(--border-width, 0px)) calc(1.5em - var(--border-width, 0px)));
+        text-align: var(--text-align, center);
         text-decoration: var(--text-decoration, none);
         text-transform: var(--text-transform, none);
         touch-action: manipulation;
@@ -509,7 +509,7 @@ export default class Button extends Hover() {
       fetchSubTags: this.hasAttribute('fetch-sub-tags'),
       clearSubTags: this.hasAttribute('clear-sub-tags'),
       this: this,
-      textContent: this.label.textContent,
+      textContent: this.label?.textContent,
       pushHistory,
       resolve
     }
